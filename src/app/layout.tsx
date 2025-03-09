@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
-import "./globals.css";
-
+import "./styles/globals.css";
+import { Toaster } from "react-hot-toast";
+import { AuthProvider } from "./contexts/AuthContext";
+import Header from "./components/header/Header";
+import Sidebar from "./components/sidebar/Sidebar";
+import Footer from "./components/footer/Footer";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -12,10 +16,27 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  console.log(`Application running in ${process.env.NEXT_PUBLIC_ENV} mode.`);
   return (
     <html lang="en">
       <body>
-        {children}
+        <Toaster position="top-right" reverseOrder={false} />
+
+        <AuthProvider>
+          <div className="flex flex-col h-screen">
+            <Header />
+
+            <div className="flex flex-1 pt-16">
+              <Sidebar />
+
+              <main className="flex-1 p-6 md:ml-64 bg-gray-100 min-h-screen">
+                {children}
+              </main>
+            </div>
+
+            <Footer />
+          </div>
+        </AuthProvider>
       </body>
     </html>
   );
